@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 export default function(props) {
     return (
         <div>
-            <h3>Welcome to Klemm Bones! </h3>
+            <h3>Welcome to A Super Fun Game! </h3>
             <h4>Standard signup form below</h4>
         <form id="new-signup-form" className="form-group" style={{marginTop: '20px'}} onSubmit={e => props.signUpUser(e)}>
             <input

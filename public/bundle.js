@@ -26649,7 +26649,7 @@
 	                _react2.default.createElement(
 	                    'a',
 	                    { className: 'navbar-brand', href: '#' },
-	                    'Animal Alerts'
+	                    'A Super Fun Game'
 	                )
 	            ),
 	            _react2.default.createElement(
@@ -30677,7 +30677,7 @@
 	        _react2.default.createElement(
 	            "h3",
 	            null,
-	            "Welcome to Klemm Bones! "
+	            "Welcome to A Super Fun Game! "
 	        ),
 	        _react2.default.createElement(
 	            "h4",
