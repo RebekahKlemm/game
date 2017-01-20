@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 
-import {App} from './App';
+import {App} from './AppContainer';
 import LoginContainer from './containers/LoginContainer';
 import SignupContainer from './containers/SignupContainer';
+import Game from './Game';
 
 
 import {Provider} from 'react-redux';
@@ -36,6 +37,7 @@ ReactDOM.render(
             <Route path='/' component={App} onEnter={onAppEnter}>
                 <IndexRoute component={SignupContainer}/>
                 <Route path ='/login' component={LoginContainer}/>
+                <Route path ='/play' component={Game}/>
             </Route>
         </Router>
     </Provider>,
