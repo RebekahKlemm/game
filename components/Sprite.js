@@ -10,7 +10,7 @@ export default class Sprite extends Component {
                 overflow: 'hidden',
                 position: 'relative'
                 }}>
-                <img src={this.props.src} style={this.getImageStyles()}/>
+                <img src={this.props.src} />
             </div>
         )
     }
