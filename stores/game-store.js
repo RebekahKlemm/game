@@ -2,7 +2,7 @@ import { observable } from 'mobx';
 
 class GameStore {
   constructor(){
-      this.characterPosition = { x: 0, y: 0 };
+      this.characterPosition = { x: 500, y: 200 };
       this.stageX = 0;
   }
 

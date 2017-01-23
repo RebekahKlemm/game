@@ -6,6 +6,7 @@ import {App} from './AppContainer';
 import LoginContainer from './containers/LoginContainer';
 import SignupContainer from './containers/SignupContainer';
 import Game from './Game';
+import Try2 from'./Try2';
 
 
 import {Provider} from 'react-redux';
@@ -38,6 +39,7 @@ ReactDOM.render(
                 <IndexRoute component={SignupContainer}/>
                 <Route path ='/login' component={LoginContainer}/>
                 <Route path ='/play' component={Game}/>
+                <Route path='/game' component={Try2}/>
             </Route>
         </Router>
     </Provider>,

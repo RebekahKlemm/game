@@ -81,7 +81,7 @@ class Game extends Component {
                         </div>
                             <Character
                                 keys={this.keyListener}
-                                //store={GameStore}
+                                store={GameStore}
                             />
                     </World>
                 </Stage>

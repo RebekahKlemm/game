@@ -75,6 +75,10 @@
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
+	var _Try = __webpack_require__(359);
+	
+	var _Try2 = _interopRequireDefault(_Try);
+	
 	var _reactRedux = __webpack_require__(236);
 	
 	var _store = __webpack_require__(348);
@@ -113,7 +117,8 @@
 	            { path: '/', component: _AppContainer.App, onEnter: onAppEnter },
 	            _react2.default.createElement(_reactRouter.IndexRoute, { component: _SignupContainer2.default }),
 	            _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _LoginContainer2.default }),
-	            _react2.default.createElement(_reactRouter.Route, { path: '/play', component: _Game2.default })
+	            _react2.default.createElement(_reactRouter.Route, { path: '/play', component: _Game2.default }),
+	            _react2.default.createElement(_reactRouter.Route, { path: '/game', component: _Try2.default })
 	        )
 	    )
 	), document.getElementById('app'));
@@ -30868,8 +30873,8 @@
 	                                })
 	                            ),
 	                            _react2.default.createElement(_Character2.default, {
-	                                keys: this.keyListener
-	                                //store={GameStore}
+	                                keys: this.keyListener,
+	                                store: _gameStore2.default
 	                            })
 	                        )
 	                    )
@@ -41737,10 +41742,7 @@
 	        //     store: PropTypes.object,
 	        // };
 	        //
-	        // static contextTypes = {
-	        //     engine: PropTypes.object,
-	        //     scale: PropTypes.number,
-	        // };
+	        // static
 	        //
 	        value: function handlePlayStateChanged(state) {
 	            this.setState({
@@ -41752,7 +41754,7 @@
 	
 	        //
 	        value: function move(body, x) {
-	            //      Matter.Body.setVelocity(body, { x, y: 0 });
+	            _matterJs2.default.Body.setVelocity(body, { x: x, y: 0 });
 	        }
 	    }, {
 	        key: 'jump',
@@ -41818,43 +41820,64 @@
 	
 	        //
 	        value: function checkKeys(shouldMoveStageLeft, shouldMoveStageRight) {
-	            var keys = this.props.keys;
-	            //     const { body } = this.body;
+	            window.onkeydown = function (e) {
+	                var code = e.keyCode ? e.keyCode : e.which;
+	                if (code === 38) {
+	                    //up key
+	                    alert('up');
+	                } else if (code === 40) {
+	                    //down key
+	                    alert('down');
+	                } else if (code === 37) {
+	                    // this.move(this.body, -5);
+	                    // characterState = 1;
+	                    // this.props.store.setStageX(this.props.store.stageX + 5);
+	                    console.log('here is body', body);
+	                    if (this.body) {
+	                        _matterJs2.default.Body.setPosition(this.body, { x: 500, y: 500 });
+	                    }
+	                } else if (code === 39) {
+	                    alert('right');
+	                }
+	            };
+	
+	            // const  keys  = this.props.keys;
+	            // const { body } = this.body;
+	
+	            // let characterState = 2;
 	            //
-	            //     let characterState = 2;
+	            // if (keys.isDown(65)) {
+	            //     return this.punch();
+	            // }
 	            //
-	            //     if (keys.isDown(65)) {
-	            //         return this.punch();
+	            // if (keys.isDown(keys.SPACE)) {
+	            //     this.jump(body);
+	            // }
+	            //
+	            // if (keys.isDown(keys.UP)) {
+	            //     return this.enterBuilding(body);
+	            // }
+	            //
+	            // if (keys.isDown(keys.LEFT)) {
+	            //     if (shouldMoveStageLeft) {
+	            //         store.setStageX(store.stageX + 5);
 	            //     }
 	            //
-	            //     if (keys.isDown(keys.SPACE)) {
-	            //         this.jump(body);
+	            //     this.move(body, -5);
+	            //     characterState = 1;
+	            // } else if (keys.isDown(keys.RIGHT)) {
+	            //     if (shouldMoveStageRight) {
+	            //         store.setStageX(store.stageX - 5);
 	            //     }
 	            //
-	            //     if (keys.isDown(keys.UP)) {
-	            //         return this.enterBuilding(body);
-	            //     }
+	            //     this.move(body, 5);
+	            //     characterState = 0;
+	            // }
 	            //
-	            //     if (keys.isDown(keys.LEFT)) {
-	            //         if (shouldMoveStageLeft) {
-	            //             store.setStageX(store.stageX + 5);
-	            //         }
-	            //
-	            //         this.move(body, -5);
-	            //         characterState = 1;
-	            //     } else if (keys.isDown(keys.RIGHT)) {
-	            //         if (shouldMoveStageRight) {
-	            //             store.setStageX(store.stageX - 5);
-	            //         }
-	            //
-	            //         this.move(body, 5);
-	            //         characterState = 0;
-	            //     }
-	            //
-	            //     this.setState({
-	            //         characterState,
-	            //         repeat: characterState < 2,
-	            //     });
+	            // this.setState({
+	            //     characterState,
+	            //     repeat: characterState < 2,
+	            // });
 	        }
 	        //
 	
@@ -41863,19 +41886,31 @@
 	        value: function update() {
 	            var store = this.props.store;
 	            var body = this.body.body;
+	            // debugger;
+	
+	            if (this.body) {
+	                _matterJs2.default.Body.setPosition(this.body.body, { x: 500, y: 500 });
+	
+	                //     console.log('got into if inside update')
+	                //     console.log('here is this.body', this.body)
+	                //     this.body.body.position.x= this.body.body.position.x + 20;
+	                //     this.body.body.position.y=20;
+	                //     // this.move(this.body.body, 0)
+	            }
+	
 	            //
 	            //     const midPoint = Math.abs(store.stageX) + 448;
-	            //
+	            // //
 	            //     const shouldMoveStageLeft = body.position.x < midPoint && store.stageX < 0;
 	            //     const shouldMoveStageRight = body.position.x > midPoint && store.stageX > -2048;
-	            //
+	            // //
 	            //     const velY = parseFloat(body.velocity.y.toFixed(10));
-	            //
+	            // //
 	            //     if (velY === 0) {
 	            //         this.isJumping = false;
 	            //         Matter.Body.set(body, 'friction', 0.9999);
 	            //     }
-	            //
+	            // //
 	            //     if (!this.isJumping && !this.isPunching && !this.isLeaving) {
 	            //
 	            //
@@ -41902,14 +41937,14 @@
 	        _classCallCheck(this, Character);
 	
 	        //
-	        //     this.loopID = null;
-	        //     this.isJumping = false;
-	        //     this.isPunching = false;
-	        //     this.isLeaving = false;
-	        //     this.lastX = 0;
-	        //
 	        var _this = _possibleConstructorReturn(this, (Character.__proto__ || Object.getPrototypeOf(Character)).call(this, props));
 	
+	        _this.loopID = null;
+	        _this.isJumping = false;
+	        _this.isPunching = false;
+	        _this.isLeaving = false;
+	        _this.lastX = 0;
+	        //
 	        _this.state = {
 	            characterState: 2,
 	            loop: false,
@@ -41917,6 +41952,7 @@
 	        };
 	
 	        _this.handlePlayStateChanged = _this.handlePlayStateChanged.bind(_this);
+	        _this.update = _this.update.bind(_this);
 	        return _this;
 	    }
 	    //
@@ -41924,17 +41960,19 @@
 	
 	    _createClass(Character, [{
 	        key: 'componentDidMount',
-	        value: function componentDidMount() {}
-	        //     this.jumpNoise = new AudioPlayer('/assets/jump.wav');
-	        //     Matter.Events.on(this.context.engine, 'afterUpdate', this.update);
-	
+	        value: function componentDidMount() {
+	            this.update();
+	            //     this.jumpNoise = new AudioPlayer('/assets/jump.wav');
+	            _matterJs2.default.Events.on(this.context.engine, 'afterUpdate', this.update);
+	        }
 	        //
 	
 	    }, {
 	        key: 'componentWillUnmount',
-	        value: function componentWillUnmount() {}
-	        // Matter.Events.off(this.context.engine, 'afterUpdate', this.update);
-	
+	        value: function componentWillUnmount() {
+	            this.update();
+	            _matterJs2.default.Events.off(this.context.engine, 'afterUpdate', this.update);
+	        }
 	        //
 	
 	    }, {
@@ -41956,6 +41994,8 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var _this2 = this;
+	
 	            // const x = this.props.store.characterPosition.x;
 	            console.log(this.props);
 	
@@ -41966,8 +42006,10 @@
 	                    _reactGameKit.Body
 	                    //args={[x, 384, 64, 64]}
 	                    ,
-	                    { inertia: Infinity
-	                        //ref={function(b) { this.body = b; }}
+	                    { inertia: Infinity,
+	                        ref: function ref(b) {
+	                            _this2.body = b;
+	                        }
 	
 	                    },
 	                    _react2.default.createElement(_reactGameKit.Sprite, {
@@ -41986,6 +42028,14 @@
 	    return Character;
 	}(_react.Component);
 	
+	exports.default = Character;
+	
+	
+	Character.contextTypes = {
+	    engine: _react.PropTypes.object,
+	    scale: _react.PropTypes.number
+	};
+	
 	// const mapStateToProps = (state, ownProps) => {
 	//     return {
 	//         repeat: state.game.repeat,
@@ -42003,9 +42053,6 @@
 	//
 	//
 	// export default connect(mapStateToProps, mapDispatchToProps)(Character);
-	
-	
-	exports.default = Character;
 
 /***/ },
 /* 344 */
@@ -55869,7 +55916,7 @@
 	  function GameStore() {
 	    _classCallCheck(this, GameStore);
 	
-	    this.characterPosition = { x: 0, y: 0 };
+	    this.characterPosition = { x: 500, y: 200 };
 	    this.stageX = 0;
 	  }
 	
@@ -55912,11 +55959,11 @@
 	
 	var _rootReducer2 = _interopRequireDefault(_rootReducer);
 	
-	var _reduxThunk = __webpack_require__(351);
+	var _reduxThunk = __webpack_require__(352);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _reduxLogger = __webpack_require__(352);
+	var _reduxLogger = __webpack_require__(353);
 	
 	var _reduxLogger2 = _interopRequireDefault(_reduxLogger);
 	
@@ -55950,7 +55997,7 @@
 	
 	var _userReducer2 = _interopRequireDefault(_userReducer);
 	
-	var _gameReducer = __webpack_require__(358);
+	var _gameReducer = __webpack_require__(351);
 	
 	var _gameReducer2 = _interopRequireDefault(_gameReducer);
 	
@@ -56034,6 +56081,47 @@
 
 /***/ },
 /* 351 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	
+	exports.default = function () {
+	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
+	    var action = arguments[1];
+	
+	    var newState = Object.assign({}, state);
+	    switch (action.type) {
+	        // case ADD_USER:
+	        //     newState.allUsers = [...newState.allUsers, action.user];
+	        //     break;
+	        default:
+	            return state;
+	    }
+	
+	    return newState;
+	};
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	__webpack_require__(299);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var initialState = {
+	    gameStore: [],
+	    repeat: true,
+	    characterState: 0
+	
+	};
+
+/***/ },
+/* 352 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -56061,7 +56149,7 @@
 	exports['default'] = thunk;
 
 /***/ },
-/* 352 */
+/* 353 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56072,11 +56160,11 @@
 	  value: true
 	});
 	
-	var _core = __webpack_require__(353);
+	var _core = __webpack_require__(354);
 	
-	var _helpers = __webpack_require__(354);
+	var _helpers = __webpack_require__(355);
 	
-	var _defaults = __webpack_require__(357);
+	var _defaults = __webpack_require__(358);
 	
 	var _defaults2 = _interopRequireDefault(_defaults);
 	
@@ -56179,7 +56267,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 353 */
+/* 354 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56189,9 +56277,9 @@
 	});
 	exports.printBuffer = printBuffer;
 	
-	var _helpers = __webpack_require__(354);
+	var _helpers = __webpack_require__(355);
 	
-	var _diff = __webpack_require__(355);
+	var _diff = __webpack_require__(356);
 	
 	var _diff2 = _interopRequireDefault(_diff);
 	
@@ -56320,7 +56408,7 @@
 	}
 
 /***/ },
-/* 354 */
+/* 355 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -56344,7 +56432,7 @@
 	var timer = exports.timer = typeof performance !== "undefined" && performance !== null && typeof performance.now === "function" ? performance : Date;
 
 /***/ },
-/* 355 */
+/* 356 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56354,7 +56442,7 @@
 	});
 	exports.default = diffLogger;
 	
-	var _deepDiff = __webpack_require__(356);
+	var _deepDiff = __webpack_require__(357);
 	
 	var _deepDiff2 = _interopRequireDefault(_deepDiff);
 	
@@ -56440,7 +56528,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 356 */
+/* 357 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/* WEBPACK VAR INJECTION */(function(global) {/*!
@@ -56869,7 +56957,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 357 */
+/* 358 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -56920,7 +57008,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 358 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -56929,36 +57017,234 @@
 	    value: true
 	});
 	
-	exports.default = function () {
-	    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : initialState;
-	    var action = arguments[1];
-	
-	    var newState = Object.assign({}, state);
-	    switch (action.type) {
-	        // case ADD_USER:
-	        //     newState.allUsers = [...newState.allUsers, action.user];
-	        //     break;
-	        default:
-	            return state;
-	    }
-	
-	    return newState;
-	};
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
 	var _react = __webpack_require__(1);
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	__webpack_require__(299);
+	var _reactRedux = __webpack_require__(236);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var initialState = {
-	    gameStore: [],
-	    repeat: true,
-	    characterState: 0
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	// import Canvas from './Canvas';
+	
+	
+	var Try2 = function (_Component) {
+	    _inherits(Try2, _Component);
+	
+	    function Try2(props) {
+	        _classCallCheck(this, Try2);
+	
+	        var _this = _possibleConstructorReturn(this, (Try2.__proto__ || Object.getPrototypeOf(Try2)).call(this, props));
+	
+	        _this.state = {
+	            currRectY: 3,
+	            currRectX: 425,
+	            mazeWidth: 556,
+	            mazeHeight: 556,
+	            interval: null,
+	            newX: null,
+	            newY: null,
+	            canMove: 1,
+	            movingAllowed: null
+	        };
+	
+	        // this.canMoveTo=this.canMoveTo.bind(this);
+	        _this.moveRect = _this.moveRect.bind(_this);
+	
+	        return _this;
+	    }
+	
+	    _createClass(Try2, [{
+	        key: 'componentDidMount',
+	        value: function componentDidMount() {
+	            this.context = this.canvas.getContext("2d");
+	            this.drawMazeAndRectangle(425, 3);
+	            window.addEventListener("keydown", this.moveRect, true);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this2 = this;
+	
+	            return _react2.default.createElement('canvas', { width: '616', height: '556', ref: function ref(element) {
+	                    return _this2.canvas = element;
+	                } });
+	        }
+	    }, {
+	        key: 'makeWhite',
+	        value: function makeWhite(x, y, w, h) {
+	            this.context.beginPath();
+	            this.context.rect(x, y, w, h);
+	            this.context.closePath();
+	            this.context.fillStyle = "white";
+	            this.context.fill();
+	        }
+	    }, {
+	        key: 'drawMazeAndRectangle',
+	        value: function drawMazeAndRectangle(rectX, rectY) {
+	            var _this3 = this;
+	
+	            this.makeWhite(0, 0, this.canvas.width, this.canvas.height);
+	            var mazeImg = new Image();
+	            mazeImg.onload = function () {
+	                // when the image is loaded, draw the image, the rectangle and the circle
+	                _this3.context.drawImage(mazeImg, 0, 0);
+	                _this3.drawRectangle(rectX, rectY, "#0000FF", false, true);
+	                _this3.context.beginPath();
+	                _this3.context.arc(542, 122, 7, 0, 2 * Math.PI, false);
+	                _this3.context.closePath();
+	                _this3.context.fillStyle = '#00FF00';
+	                _this3.context.fill();
+	            };
+	            mazeImg.src = "maze.gif";
+	        }
+	    }, {
+	        key: 'drawRectangle',
+	        value: function drawRectangle(x, y, style) {
+	            this.makeWhite(this.state.currRectX, this.state.currRectY, 15, 15);
+	            this.setState({
+	                currRectX: x,
+	                currRectY: y
+	            });
+	            this.context.beginPath();
+	            this.context.rect(x, y, 15, 15);
+	            this.context.closePath();
+	            this.context.fillStyle = style;
+	            this.context.fill();
+	        }
+	    }, {
+	        key: 'canMoveTo',
+	        value: function canMoveTo(destX, destY) {
+	            console.log('desX, destY', destX, destY);
+	            console.log('inside canMoveTo, here is this', this);
+	            var imgData = this.context.getImageData(destX, destY, 15, 15);
+	            console.log('canMoveTo, imgData', imgData);
+	            var data = imgData.data;
+	            this.setState({
+	                canMove: 1
+	            });
+	            console.log('canMoveTo, this', this);
+	            if (destX >= 0 && destX <= this.state.mazeWidth - 15 && destY >= 0 && destY <= this.state.mazeHeight - 15) {
+	                // check whether the rectangle would move inside the bounds of the canvas
+	                for (var i = 0; i < 4 * 15 * 15; i += 4) {
+	                    // look at all pixels
+	                    if (data[i] === 0 && data[i + 1] === 0 && data[i + 2] === 0) {
+	                        // black
+	                        this.setState({
+	                            canMove: 0
+	                        });
+	                        break;
+	                    } else if (data[i] === 0 && data[i + 1] === 255 && data[i + 2] === 0) {
+	                        // lime: #00FF00
+	                        this.setState({
+	                            canMove: 2
+	                        });
+	                        break;
+	                    }
+	                }
+	            } else {
+	                this.setState({
+	                    canMove: 0
+	                });
+	            }
+	            console.log('this.canMove, line 107, this', this);
+	            return this.state.canMove;
+	        }
+	    }, {
+	        key: 'moveRect',
+	        value: function moveRect(e) {
+	            console.log('here is e', e);
+	            e = e || window.event;
+	            console.log('inside moveRect, here is this before', this);
+	            e.preventDefault();
+	            switch (e.keyCode) {
+	                case 38: // arrow up key
+	                case 87:
+	                    // W key
+	                    this.setState({
+	                        newX: this.state.currRectX,
+	                        newY: this.state.currRectY - 3
+	                    });
+	                    break;
+	                case 37: // arrow left key
+	                case 65:
+	                    // A key
+	                    this.setState({
+	                        newX: this.state.currRectX - 3,
+	                        newY: this.state.currRectY
+	                    });
+	                    break;
+	                case 40: // arrow down key
+	                case 83:
+	                    // S key
+	                    // case 91:
+	                    this.setState({
+	                        newX: this.state.currRectX,
+	                        newY: this.state.currRectY + 3
+	                    });
+	                    break;
+	                case 39: // arrow right key
+	                case 68:
+	                    // D key
+	                    this.setState({
+	                        newX: this.state.currRectX + 3,
+	                        newY: this.state.currRectY
+	                    });
+	                    break;
+	                default:
+	                    return;
+	            }
+	            console.log('inside moveRect, here is this after', this);
+	
+	            console.log('newX, newY', this.state.newX, this.state.newY);
+	            var allowed = this.canMoveTo(this.state.newX, this.state.newY);
+	            console.log('allowed', allowed);
+	            this.setState({
+	                movingAllowed: allowed
+	            });
+	            console.log('line 147, this', this);
+	            if (this.state.movingAllowed === 1) {
+	                // 1 means 'the rectangle can move'
+	                console.log('YYYYYEEEESSSS, you are allowed to move');
+	                this.drawRectangle(this.state.newX, this.state.newY, "#0000FF");
+	                this.setState({
+	                    currRectX: this.state.newX,
+	                    currRectY: this.state.newY
+	                });
+	            } else if (this.state.movingAllowed === 2) {
+	                // 2 means 'the rectangle reached the end point'
+	                // clearInterval(intervalVar); // we'll set the timer later in this article
+	                this.makeWhite(0, 0, this.canvas.width, this.canvas.height);
+	                this.context.font = "40px Arial";
+	                this.context.fillStyle = "blue";
+	                this.context.textAlign = "center";
+	                this.context.textBaseline = "middle";
+	                this.context.fillText("Congratulations!", this.canvas.width / 2, this.canvas.height / 2);
+	                window.removeEventListener("keydown", this.moveRect, true);
+	            }
+	        }
+	    }]);
+	
+	    return Try2;
+	}(_react.Component);
+	
+	var mapStateToProps = function mapStateToProps(state, ownProps) {
+	    return {};
 	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	    return {};
+	};
+	
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Try2);
 
 /***/ }
 /******/ ]);

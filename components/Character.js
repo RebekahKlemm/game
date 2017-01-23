@@ -18,10 +18,7 @@ export default class Character extends Component {
     //     store: PropTypes.object,
     // };
     //
-    // static contextTypes = {
-    //     engine: PropTypes.object,
-    //     scale: PropTypes.number,
-    // };
+    // static
     //
     handlePlayStateChanged(state){
         this.setState({
@@ -30,7 +27,7 @@ export default class Character extends Component {
     };
     //
     move(body, x) {
-    //      Matter.Body.setVelocity(body, { x, y: 0 });
+         Matter.Body.setVelocity(body, { x, y: 0 });
     };
     //
     jump(body){
@@ -81,61 +78,102 @@ export default class Character extends Component {
     };
     //
     checkKeys(shouldMoveStageLeft, shouldMoveStageRight){
-        const { keys } = this.props;
-    //     const { body } = this.body;
-    //
-    //     let characterState = 2;
-    //
-    //     if (keys.isDown(65)) {
-    //         return this.punch();
-    //     }
-    //
-    //     if (keys.isDown(keys.SPACE)) {
-    //         this.jump(body);
-    //     }
-    //
-    //     if (keys.isDown(keys.UP)) {
-    //         return this.enterBuilding(body);
-    //     }
-    //
-    //     if (keys.isDown(keys.LEFT)) {
-    //         if (shouldMoveStageLeft) {
-    //             store.setStageX(store.stageX + 5);
-    //         }
-    //
-    //         this.move(body, -5);
-    //         characterState = 1;
-    //     } else if (keys.isDown(keys.RIGHT)) {
-    //         if (shouldMoveStageRight) {
-    //             store.setStageX(store.stageX - 5);
-    //         }
-    //
-    //         this.move(body, 5);
-    //         characterState = 0;
-    //     }
-    //
-    //     this.setState({
-    //         characterState,
-    //         repeat: characterState < 2,
-    //     });
+        window.onkeydown = function (e) {
+            var code = e.keyCode ? e.keyCode : e.which;
+            if (code === 38) { //up key
+                alert('up');
+            } else if (code === 40) { //down key
+                alert('down');
+            }
+            else if(code === 37){
+                // this.move(this.body, -5);
+                // characterState = 1;
+                // this.props.store.setStageX(this.props.store.stageX + 5);
+                console.log('here is body', body)
+                if(this.body){
+                    Matter.Body.setPosition(this.body, {x:500, y:500})
+                }
+
+            }
+            else if(code === 39){
+                alert('right');
+            }
+        };
+
+
+
+
+
+        // const  keys  = this.props.keys;
+        // const { body } = this.body;
+
+        // let characterState = 2;
+        //
+        // if (keys.isDown(65)) {
+        //     return this.punch();
+        // }
+        //
+        // if (keys.isDown(keys.SPACE)) {
+        //     this.jump(body);
+        // }
+        //
+        // if (keys.isDown(keys.UP)) {
+        //     return this.enterBuilding(body);
+        // }
+        //
+        // if (keys.isDown(keys.LEFT)) {
+        //     if (shouldMoveStageLeft) {
+        //         store.setStageX(store.stageX + 5);
+        //     }
+        //
+        //     this.move(body, -5);
+        //     characterState = 1;
+        // } else if (keys.isDown(keys.RIGHT)) {
+        //     if (shouldMoveStageRight) {
+        //         store.setStageX(store.stageX - 5);
+        //     }
+        //
+        //     this.move(body, 5);
+        //     characterState = 0;
+        // }
+        //
+        // this.setState({
+        //     characterState,
+        //     repeat: characterState < 2,
+        // });
     }
     //
     update(){
         const { store } = this.props;
         const { body } = this.body;
+        // debugger;
+
+        if(this.body) {
+            Matter.Body.setPosition(this.body.body, {x:500, y:500})
+
+            //     console.log('got into if inside update')
+        //     console.log('here is this.body', this.body)
+        //     this.body.body.position.x= this.body.body.position.x + 20;
+        //     this.body.body.position.y=20;
+        //     // this.move(this.body.body, 0)
+
+        }
+
+
+
     //
     //     const midPoint = Math.abs(store.stageX) + 448;
-    //
+    // //
     //     const shouldMoveStageLeft = body.position.x < midPoint && store.stageX < 0;
     //     const shouldMoveStageRight = body.position.x > midPoint && store.stageX > -2048;
-    //
+    // //
     //     const velY = parseFloat(body.velocity.y.toFixed(10));
-    //
+    // //
     //     if (velY === 0) {
     //         this.isJumping = false;
     //         Matter.Body.set(body, 'friction', 0.9999);
     //     }
-    //
+    // //
     //     if (!this.isJumping && !this.isPunching && !this.isLeaving) {
     //
     //
@@ -160,11 +198,11 @@ export default class Character extends Component {
     constructor(props) {
         super(props);
     //
-    //     this.loopID = null;
-    //     this.isJumping = false;
-    //     this.isPunching = false;
-    //     this.isLeaving = false;
-    //     this.lastX = 0;
+        this.loopID = null;
+        this.isJumping = false;
+        this.isPunching = false;
+        this.isLeaving = false;
+        this.lastX = 0;
     //
         this.state = {
             characterState: 2,
@@ -173,15 +211,18 @@ export default class Character extends Component {
         };
 
         this.handlePlayStateChanged = this.handlePlayStateChanged.bind(this);
+        this.update = this.update.bind(this);
     }
     //
     componentDidMount() {
+        this.update();
     //     this.jumpNoise = new AudioPlayer('/assets/jump.wav');
-    //     Matter.Events.on(this.context.engine, 'afterUpdate', this.update);
+        Matter.Events.on(this.context.engine, 'afterUpdate', this.update);
     }
     //
     componentWillUnmount() {
-        // Matter.Events.off(this.context.engine, 'afterUpdate', this.update);
+        this.update();
+        Matter.Events.off(this.context.engine, 'afterUpdate', this.update);
     }
     //
     getWrapperStyles() {
@@ -207,7 +248,7 @@ export default class Character extends Component {
                 <Body
                     //args={[x, 384, 64, 64]}
                     inertia={Infinity}
-                    //ref={function(b) { this.body = b; }}
+                    ref={(b) => { this.body = b; }}
 
                 >
                 <Sprite
@@ -223,6 +264,11 @@ export default class Character extends Component {
         );
     }
 }
+
+Character.contextTypes = {
+    engine: PropTypes.object,
+    scale: PropTypes.number,
+};
 
 // const mapStateToProps = (state, ownProps) => {
 //     return {
